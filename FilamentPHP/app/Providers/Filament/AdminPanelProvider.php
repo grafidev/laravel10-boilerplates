@@ -17,7 +17,9 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin;
 use BezhanSalleh\FilamentLanguageSwitch\FilamentLanguageSwitchPlugin;
+use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -58,7 +60,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentLanguageSwitchPlugin::make(),
-                FilamentSpatieRolesPermissionsPlugin::make()
+                FilamentSpatieRolesPermissionsPlugin::make(),
+                EnvironmentIndicatorPlugin::make()->visible(true),
+                FilamentSpatieLaravelHealthPlugin::make(),
             ]);
     }
 }
