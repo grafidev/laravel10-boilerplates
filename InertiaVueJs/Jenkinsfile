@@ -1,0 +1,36 @@
+pipeline {
+   agent {
+           docker {
+             image 'papesambandour/docker-node-alpine-16-git:1.1'
+             args '-u root:root'
+           }
+       }
+
+    stages {
+        stage('Install caprover CLI'){
+          steps{
+             echo "START INSTALL CAPROVER CLI"
+             sh 'npm install -g caprover'
+             echo "END INSTALL CAPROVER CLI"
+          }
+        }
+
+        stage('Add dns caprover in container'){
+          steps{
+          echo "START DNS"
+          sh ' echo "10.0.92.15    captain.factory.free" >> /etc/hosts'
+          echo "END DNS"
+          }
+        }
+        stage('Deployment Env Test') {
+         when {
+                      expression { env.GIT_BRANCH == "origin/develop" }
+            }
+            steps {
+                echo 'Start deploy'
+                sh 'caprover deploy -h ${CAPTAIN_URL} -p ${PASSWORD_CAPROVER} -b $GIT_BRANCH -a  backoffice-commande-dealer'
+                echo 'END DEPLOY $GIT_BRANCH'
+            }
+        }
+    }
+}
